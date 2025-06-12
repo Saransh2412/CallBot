@@ -30,7 +30,7 @@ function App() {
   </p>
 
   {/* 🎙️ Record Button Here */}
-  <RecordButton />
+ 
 </div>
 
       </div>
