@@ -52,7 +52,9 @@ app.post('/api/audio', upload.single('audio'), async (req, res) => {
     const audio = { content: audioBytes };
     const config = {
       encoding: 'WEBM_OPUS',
-      languageCode: 'en-US'
+      languageCode: 'en-US',
+      model: 'latest_long'
+
     };
     const request = { audio, config };
 
