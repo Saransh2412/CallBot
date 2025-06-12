@@ -1,1 +1,5 @@
-*.json
+.env
+
+striped-device-456606-s4-77f1eedb1e8e.json
+
+node_modules

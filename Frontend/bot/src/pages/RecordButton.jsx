@@ -3,6 +3,7 @@ import React, { useRef, useState } from "react";
 
 const RecordButton = () => {
   const [recording, setRecording] = useState(false);
+  const [status, setStatus] = useState('');
   const mediaRecorderRef = useRef(null);
   const audioChunks = useRef([]);
 
@@ -17,15 +18,27 @@ const RecordButton = () => {
     mediaRecorderRef.current.onstop = async () => {
       const blob = new Blob(audioChunks.current, { type: "audio/wav" });
       const formData = new FormData();
-      formData.append("audio", blob);
+      formData.append("audio", blob);      try {
+        setStatus('Uploading audio...');
+        // Send to backend
+        const response = await fetch("http://localhost:5000/api/audio", {
+          method: "POST",
+          body: formData,
+        });
 
-      // Send to backend
-      await fetch("http://localhost:5000/api/audio", {
-        method: "POST",
-        body: formData,
-      });
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
 
-      audioChunks.current = [];
+        const data = await response.json();
+        console.log('Audio processed:', data);
+        setStatus('Audio processed successfully!');
+      } catch (error) {
+        console.error('Error uploading audio:', error);
+        setStatus('Error processing audio. Please try again.');
+      } finally {
+        audioChunks.current = [];
+      }
     };
 
     mediaRecorderRef.current.start();
@@ -36,11 +49,13 @@ const RecordButton = () => {
     mediaRecorderRef.current.stop();
     setRecording(false);
   };
-
   return (
-    <button onClick={recording ? stopRecording : startRecording}>
-      {recording ? "Stop Recording" : "Start Recording"}
-    </button>
+    <div>
+      <button onClick={recording ? stopRecording : startRecording}>
+        {recording ? "Stop Recording" : "Start Recording"}
+      </button>
+      {status && <p>{status}</p>}
+    </div>
   );
 };
 
