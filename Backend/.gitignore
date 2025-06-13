@@ -1,5 +1,8 @@
+# Node dependencies
+node_modules
+
+# Environment variables
 .env
 
+# Google Cloud service account key
 striped-device-456606-s4-77f1eedb1e8e.json
-
-node_modules

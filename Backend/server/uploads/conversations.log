@@ -1,0 +1,79 @@
+
+Convo 1
+==================
+Date: 13/6/2025, 10:16:55 am
+
+User said:
+----------
+No transcription available.
+
+NLU Output:
+-----------
+{
+  "intent": "unknown",
+  "entities": {}
+}
+
+Bot Reply:
+----------
+You haven't provided any information.  To help you, please tell me what you'd like to do or ask.
+
+-----------------------------------------------
+
+Convo 2
+==================
+Date: 13/6/2025, 10:17:13 am
+
+User said:
+----------
+I want to book the tickets from Delhi to London
+
+NLU Output:
+-----------
+{
+  "intent": "book_tickets",
+  "entities": {
+    "source": "Delhi",
+    "destination": "London"
+  }
+}
+
+Bot Reply:
+----------
+Okay, I understand you want to book tickets from Delhi to London.  To help me find the best options for you, I still need some more information:
+
+* **When would you like to travel?** (Please specify dates or a date range)
+* **How many passengers?** (Adults, children, infants?)
+* **Do you have any preferences?** (e.g., specific airlines, preferred travel time, non-stop flights, economy/business/first class)
+
+
+Once I have this information, I can help you find flight options and provide links to sites where you can book.  I cannot directly book the tickets for you.
+
+-----------------------------------------------
+
+Convo 3
+==================
+Date: 13/6/2025, 10:17:40 am
+
+User said:
+----------
+I want to travel on
+
+NLU Output:
+-----------
+{
+  "intent": "travel",
+  "entities": {}
+}
+
+Bot Reply:
+----------
+"I want to travel on..." is incomplete.  To help you, please tell me:
+
+* **What date(s) or date range?** (e.g., "October 27th", "between November 10th and 17th")
+* **Where are you traveling to and from?** (e.g., "from London to Paris", "to New York City")
+* **What mode of transportation?** (e.g., "plane", "train", "car")
+
+The more detail you provide, the better I can assist you.
+
+-----------------------------------------------
