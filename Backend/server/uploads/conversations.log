@@ -77,3 +77,79 @@ Bot Reply:
 The more detail you provide, the better I can assist you.
 
 -----------------------------------------------
+
+Convo 4
+==================
+Date: 13/6/2025, 11:33:53 am
+
+User said:
+----------
+hello hello
+
+NLU Output:
+-----------
+{
+  "intent": "greeting",
+  "entities": {}
+}
+
+Bot Reply:
+----------
+Assistant: Hello there!
+
+-----------------------------------------------
+
+Convo 5
+==================
+Date: 13/6/2025, 11:34:09 am
+
+User said:
+----------
+can you book a ticket for me
+
+NLU Output:
+-----------
+{
+  "intent": "book_ticket",
+  "entities": {}
+}
+
+Bot Reply:
+----------
+Okay, I can help you with that.  To book a ticket for you, I need some more information.  Please tell me:
+
+* **What kind of ticket?** (e.g., movie, plane, train, concert, event)
+* **Where to?** (e.g., city, venue, destination)
+* **When?** (e.g., date, time)
+* **How many tickets?**
+* **Any preferences?** (e.g., seating, class of travel)
+
+
+Once I have this information, I can assist you further.
+
+-----------------------------------------------
+
+Convo 6
+==================
+Date: 13/6/2025, 11:42:22 am
+
+User said:
+----------
+hello baby girl can you book a ticket for me
+
+NLU Output:
+-----------
+{
+  "intent": "book_ticket",
+  "entities": {}
+}
+
+Bot Reply:
+----------
+The user's intent is clear (book_ticket), but the entities are missing.  To fulfill the request, we need more information.  A follow-up question is necessary.  Here's an example:
+
+**Follow-up question:**
+
+"Okay, I can help with that.  To book your ticket, I need some information.  Could you tell me where you'd like to travel to and from, and your preferred travel dates?"
+
+-----------------------------------------------
