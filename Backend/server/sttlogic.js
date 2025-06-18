@@ -4,6 +4,7 @@ const speech = require('@google-cloud/speech');
 const extractIntentEntities = require('./nlu');
 const getDynamicResponse = require('./dialogueManager');
 const synthesizeSpeech = require('./tts');
+const { addMessage } = require('./memory'); // ✅ Import memory logging
 require('dotenv').config();
 
 const speechClient = new speech.SpeechClient({
@@ -11,33 +12,6 @@ const speechClient = new speech.SpeechClient({
 });
 
 const uploadsDir = path.join(__dirname, 'uploads');
-const convoLogPath = path.join(uploadsDir, 'conversations.log');
-
-// 📄 Helper: Append to conversations.log
-function appendToConversationLog({ transcription, nlu, reply }) {
-  const convoCount = (fs.existsSync(convoLogPath) && fs.readFileSync(convoLogPath, 'utf8').match(/Convo \d+/g)?.length) || 0;
-  const nextConvo = `Convo ${convoCount + 1}`;
-  const block = `
-${nextConvo}
-==================
-Date: ${new Date().toLocaleString()}
-
-User said:
-----------
-${transcription || 'No transcription available.'}
-
-NLU Output:
------------
-${JSON.stringify(nlu, null, 2)}
-
-Bot Reply:
-----------
-${reply || 'No reply generated.'}
-
------------------------------------------------\n`;
-
-  fs.appendFileSync(convoLogPath, block, 'utf8');
-}
 
 // 🔊 Main STT handler
 const handleAudioUpload = async (req, res) => {
@@ -77,14 +51,14 @@ const handleAudioUpload = async (req, res) => {
     // 💬 Generate Bot Reply
     let botReply = '';
     try {
-      botReply = await getDynamicResponse(nluResult.intent, nluResult.entities, transcription);
+      botReply = await getDynamicResponse('unknown', {}, transcription); // sessionId not used here
       console.log('💬 Bot Reply:', botReply);
     } catch (err) {
       console.error('❌ Dialogue error:', err.message);
       botReply = 'Sorry, I had trouble generating a response.';
     }
 
-    // 🔊 Convert to speech (no file save)
+    // 🔊 Convert to speech
     let audioBase64 = '';
     try {
       const audioBuffer = await synthesizeSpeech(botReply);
@@ -93,18 +67,21 @@ const handleAudioUpload = async (req, res) => {
       console.error('❌ TTS Error:', ttsError.message);
     }
 
-    // 🗂️ Append to log file
-    appendToConversationLog({ transcription, nlu: nluResult, reply: botReply });
+    // ✅ In-memory log (no file save)
+    addMessage('upload-ui', 'log', {
+      transcription,
+      intent: nluResult.intent,
+      entities: nluResult.entities,
+      reply: botReply
+    });
 
-    // ✅ Send final response
     res.json({
       success: true,
       transcription,
       nlu: nluResult,
       reply: botReply,
-      audioBase64, // base64 MP3 audio
-      textFileUrl: `http://localhost:5000/uploads/${textFilename}`,
-      logFileUrl: `http://localhost:5000/uploads/conversations.log`
+      audioBase64,
+      textFileUrl: `http://localhost:5000/uploads/${textFilename}`
     });
 
   } catch (error) {
@@ -138,7 +115,7 @@ const getTranscriptions = (req, res) => {
 };
 
 // 🔁 WebSocket-compatible STT + NLU + reply handler
-const transcribeAudioBase64 = async (audioBase64) => {
+const transcribeAudioBase64 = async (audioBase64, sessionId) => {
   try {
     const request = {
       audio: { content: audioBase64 },
@@ -152,7 +129,6 @@ const transcribeAudioBase64 = async (audioBase64) => {
     const [response] = await speechClient.recognize(request);
     const transcription = response.results.map(result => result.alternatives[0].transcript).join('\n');
 
-    // 🧠 Run NLU
     let nluResult = {};
     try {
       nluResult = await extractIntentEntities(transcription);
@@ -162,17 +138,15 @@ const transcribeAudioBase64 = async (audioBase64) => {
       nluResult = { error: 'Failed to extract intent/entities' };
     }
 
-    // 💬 Generate Bot Reply
     let botReply = '';
     try {
-      botReply = await getDynamicResponse(nluResult.intent, nluResult.entities, transcription);
+      botReply = await getDynamicResponse(sessionId, nluResult.intent, nluResult.entities, transcription);
       console.log('💬 Bot Reply:', botReply);
     } catch (err) {
       console.error('❌ Dialogue error:', err.message);
       botReply = 'Sorry, I had trouble generating a response.';
     }
 
-    // 🔊 Convert to speech
     let audioBase64Reply = '';
     try {
       const audioBuffer = await synthesizeSpeech(botReply);
@@ -181,8 +155,13 @@ const transcribeAudioBase64 = async (audioBase64) => {
       console.error('❌ TTS Error:', ttsError.message);
     }
 
-    // 🗂️ Optional: log the conversation
-    appendToConversationLog({ transcription, nlu: nluResult, reply: botReply });
+    // ✅ In-memory log (per session)
+    addMessage(sessionId, 'log', {
+      transcription,
+      intent: nluResult.intent,
+      entities: nluResult.entities,
+      reply: botReply
+    });
 
     return {
       success: true,

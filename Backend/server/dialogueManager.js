@@ -5,30 +5,36 @@ require('dotenv').config();
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
 
-async function getDynamicResponse(intent, entities, userInput) {
+async function getDynamicResponse(sessionId, intent, entities, userInput) {
   try {
-    // Prepare chat history
-    const messages = getHistory().map(entry => ({
-      role: entry.role,
-      parts: [{ text: entry.content }]
-    }));
+    const messages = getHistory(sessionId)
+  .filter(entry => entry.role === 'user' || entry.role === 'model') // ✅ Only allowed roles
+  .map(entry => ({
+    role: entry.role,
+    parts: [{
+      text: typeof entry.content === 'string'
+        ? entry.content
+        : JSON.stringify(entry.content)
+    }]
+  }));
 
-    // Add current user input to conversation
+
+    // ❌ DO NOT add a system prompt here for gemini-1.5-flash
+
     messages.push({
       role: 'user',
-      parts: [{ text: `Intent: ${intent}, Entities: ${JSON.stringify(entities)}\nUser: ${userInput}` }]
+      parts: [{
+text: `The user said: "${userInput}". Their intent is "${intent}" and relevant entities are: ${JSON.stringify(entities)}. 
+Respond naturally like a voice assistant. Don't mention intent or entities. Just reply helpfully like you’re speaking aloud.`
+      }]
     });
 
-    const result = await model.generateContent({
-      contents: messages
-    });
-
+    const result = await model.generateContent({ contents: messages });
     const response = await result.response;
     const reply = response.text().trim();
 
-    // Save both user and assistant responses to memory
-    addMessage('user', userInput);
-    addMessage('model', reply);
+    addMessage(sessionId, 'user', userInput);
+    addMessage(sessionId, 'model', reply);
 
     return reply;
   } catch (error) {

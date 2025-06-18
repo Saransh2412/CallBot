@@ -1,21 +1,44 @@
 // server/memory.js
-const conversationHistory = [];
 
-function addMessage(role, content) {
-  conversationHistory.push({ role, content });
+// Short-term memory for context (max 10 entries)
+const memoryMap = {};
 
-  // Limit history to last 10 messages
-  if (conversationHistory.length > 10) {
-    conversationHistory.shift();
+// Full structured conversation log per session
+const logMap = {};
+
+function addMessage(sessionId, role, content) {
+  // Initialize if not present
+  if (!memoryMap[sessionId]) memoryMap[sessionId] = [];
+  if (!logMap[sessionId]) logMap[sessionId] = [];
+
+  const message = { role, content };
+
+  // Add to Gemini memory
+  memoryMap[sessionId].push(message);
+  if (memoryMap[sessionId].length > 10) {
+    memoryMap[sessionId].shift();
   }
+
+  // Always add to full log
+  logMap[sessionId].push(message);
 }
 
-function getHistory() {
-  return conversationHistory;
+function getHistory(sessionId) {
+  return memoryMap[sessionId] || [];
 }
 
-function resetHistory() {
-  conversationHistory.length = 0;
+function getLog(sessionId) {
+  return logMap[sessionId] || [];
 }
 
-module.exports = { addMessage, getHistory, resetHistory };
+function resetHistory(sessionId) {
+  delete memoryMap[sessionId];
+  delete logMap[sessionId];
+}
+
+module.exports = {
+  addMessage,
+  getHistory,
+  getLog,
+  resetHistory
+};
