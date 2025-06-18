@@ -153,3 +153,449 @@ The user's intent is clear (book_ticket), but the entities are missing.  To fulf
 "Okay, I can help with that.  To book your ticket, I need some information.  Could you tell me where you'd like to travel to and from, and your preferred travel dates?"
 
 -----------------------------------------------
+
+Convo 7
+==================
+Date: 13/6/2025, 2:31:30 pm
+
+User said:
+----------
+hello my name is aarti City I live in deep
+
+NLU Output:
+-----------
+{
+  "intent": "introduce",
+  "entities": {
+    "name": "aarti",
+    "city": "deep"
+  }
+}
+
+Bot Reply:
+----------
+Nice to meet you, Aarti from Deep!
+
+-----------------------------------------------
+
+Convo 8
+==================
+Date: 13/6/2025, 2:31:58 pm
+
+User said:
+----------
+here you
+ tell me about something about yourself
+
+NLU Output:
+-----------
+{
+  "intent": "tell_me_about_yourself",
+  "entities": {}
+}
+
+Bot Reply:
+----------
+I am a large language model, trained by Google.  I can communicate and generate human-like text in response to a wide range of prompts and questions.  For example, I can provide summaries of factual topics, create stories, and translate languages.  My knowledge cutoff is 2021, meaning I don't have information on events after that year.  I'm constantly learning and improving, but I don't have personal experiences, feelings, or opinions like a human does.  I'm here to help you with information and creative text generation.
+
+-----------------------------------------------
+
+Convo 9
+==================
+Date: 13/6/2025, 2:32:47 pm
+
+User said:
+----------
+the city
+
+NLU Output:
+-----------
+{
+  "intent": "unknown",
+  "entities": {
+    "location": "city"
+  }
+}
+
+Bot Reply:
+----------
+"The city" is too vague.  To tell you about a city, I need to know *which* city you're interested in.  Could you please specify a city's name?
+
+-----------------------------------------------
+
+Convo 10
+==================
+Date: 13/6/2025, 2:33:06 pm
+
+User said:
+----------
+please tell me
+ what is your name please tell me
+
+NLU Output:
+-----------
+{
+  "intent": "query_name",
+  "entities": {}
+}
+
+Bot Reply:
+----------
+I don't have a name.  I am a large language model.
+
+-----------------------------------------------
+
+Convo 11
+==================
+Date: 13/6/2025, 2:33:22 pm
+
+User said:
+----------
+can you can I give you a name
+
+NLU Output:
+-----------
+{
+  "intent": "request_name",
+  "entities": {}
+}
+
+Bot Reply:
+----------
+No, you can't give me a name. I am a large language model; I don't have a personal identity or the capacity to have a name in the same way a person does.
+
+-----------------------------------------------
+
+Convo 12
+==================
+Date: 13/6/2025, 2:33:44 pm
+
+User said:
+----------
+you are living or nonliving thing
+
+NLU Output:
+-----------
+{
+  "intent": "identify_living_or_nonliving",
+  "entities": {
+    "object": "thing"
+  }
+}
+
+Bot Reply:
+----------
+I am a non-living thing.  I am a computer program.
+
+-----------------------------------------------
+
+Convo 13
+==================
+Date: 13/6/2025, 2:34:06 pm
+
+User said:
+----------
+soon as I can
+ so
+ do you know Sarah's
+
+NLU Output:
+-----------
+{
+  "intent": "unknown",
+  "entities": {
+    "person": "Sarah"
+  }
+}
+
+Bot Reply:
+----------
+This is incomplete.  To understand what you're asking, I need more information.  "Do you know Sarah's..." what?  Sarah's phone number?  Sarah's address?  Sarah's favorite color?  Please complete your sentence.
+
+-----------------------------------------------
+
+Convo 14
+==================
+Date: 14/6/2025, 9:56:54 pm
+
+User said:
+----------
+hello how are you
+
+NLU Output:
+-----------
+{
+  "intent": "greeting",
+  "entities": {}
+}
+
+Bot Reply:
+----------
+System: I'm doing well, thank you for asking! How can I help you today?
+
+-----------------------------------------------
+
+Convo 15
+==================
+Date: 14/6/2025, 10:01:14 pm
+
+User said:
+----------
+
+it if I how many messages you can hold up to
+
+NLU Output:
+-----------
+{
+  "intent": "check_message_capacity",
+  "entities": {}
+}
+
+Bot Reply:
+----------
+I don't have a limit on the number of messages I can process in a single conversation.  My capacity is determined by the resources available to me at any given moment, and that's constantly changing.  Think of it like this: I don't store past conversations, so the number of messages I can handle at once is only limited by the computing power available and the complexity of your requests.  So, practically speaking, you don't need to worry about a message limit.
+
+-----------------------------------------------
+
+Convo 16
+==================
+Date: 14/6/2025, 10:13:50 pm
+
+User said:
+----------
+hello hello are you
+
+NLU Output:
+-----------
+{
+  "intent": "unknown",
+  "entities": {}
+}
+
+Bot Reply:
+----------
+The user's utterance "hello hello are you" seems like a greeting followed by an incomplete question.  It's difficult to determine the intent without more context.  The user might be:
+
+* **Trying to start a conversation:**  A simple greeting.
+* **Checking if the system is online:**  "Are you" implies a check for availability or responsiveness.
+* **Asking a question that was cut off:** The "are you" suggests a further question was intended but not completed.
+
+More information is needed to understand the user's intent.
+
+-----------------------------------------------
+
+Convo 17
+==================
+Date: 17/6/2025, 7:14:07 pm
+
+User said:
+----------
+to you
+
+NLU Output:
+-----------
+{
+  "intent": "unknown",
+  "entities": {}
+}
+
+Bot Reply:
+----------
+That's a very short and ambiguous utterance.  To understand your intent, I need more information.  "To you" implies something is being directed towards me, but what?  Please clarify your request or statement.
+
+-----------------------------------------------
+
+Convo 18
+==================
+Date: 17/6/2025, 7:22:02 pm
+
+User said:
+----------
+hi
+ can you please tell me the answer
+
+NLU Output:
+-----------
+{
+  "intent": "request_answer",
+  "entities": {}
+}
+
+Bot Reply:
+----------
+To what question?  I need a question to give you an answer.
+
+-----------------------------------------------
+
+Convo 19
+==================
+Date: 17/6/2025, 7:27:46 pm
+
+User said:
+----------
+hi guys are listening to me
+
+NLU Output:
+-----------
+{
+  "intent": "attention_check",
+  "entities": {}
+}
+
+Bot Reply:
+----------
+Okay, I'm here and listening.  How can I help you?
+
+-----------------------------------------------
+
+Convo 20
+==================
+Date: 17/6/2025, 7:30:00 pm
+
+User said:
+----------
+doctor
+
+NLU Output:
+-----------
+{
+  "intent": "find_doctor",
+  "entities": {
+    "profession": "doctor"
+  }
+}
+
+Bot Reply:
+----------
+This is a minimal, valid input.  The intent is clear (`find_doctor`) and the entity is correctly identified (`profession: doctor`).  No further information is needed to understand the user's request, though adding more context (location, specialty, etc.) would improve the response.
+
+-----------------------------------------------
+
+Convo 21
+==================
+Date: 17/6/2025, 7:43:50 pm
+
+User said:
+----------
+hello hello
+
+NLU Output:
+-----------
+{
+  "intent": "greeting",
+  "entities": {}
+}
+
+Bot Reply:
+----------
+This is a good example of a simple intent recognition. The intent "greeting" is correctly identified, and the absence of entities is also correctly noted because the user utterance "hello hello" doesn't contain any named entities (like people, places, or dates).  The system has successfully recognized the conversational intent without any need for further information extraction.
+
+-----------------------------------------------
+
+Convo 22
+==================
+Date: 17/6/2025, 7:47:51 pm
+
+User said:
+----------
+No transcription available.
+
+NLU Output:
+-----------
+{
+  "intent": "UNKNOWN",
+  "entities": {}
+}
+
+Bot Reply:
+----------
+This represents a situation where a natural language understanding (NLU) system has failed to identify any intent or extract any entities from a user's input, which is an empty string in this case.  The system correctly reports `Intent: UNKNOWN` and `Entities: {}` because there's nothing to interpret.  This is a perfectly valid and expected outcome for an empty user input.  The system's behavior is consistent and correctly reflects the lack of information.
+
+-----------------------------------------------
+
+Convo 23
+==================
+Date: 17/6/2025, 7:48:33 pm
+
+User said:
+----------
+can you book a ticket for me
+
+NLU Output:
+-----------
+{
+  "intent": "book_ticket",
+  "entities": {}
+}
+
+Bot Reply:
+----------
+This is a good example. The intent `book_ticket` is correctly identified from the user's request. However, the `Entities: {}` indicates a shortcoming.  The system should have extracted relevant entities such as:
+
+* **Destination:** (Missing - needs more information from the user)
+* **Origin:** (Missing - needs more information from the user)
+* **Date:** (Missing - needs more information from the user)
+* **Time:** (Missing - potentially needs more information from the user)
+* **Type of Ticket:** (Missing -  e.g., train, plane, bus, movie)
+
+
+The user's request is too vague. To successfully book a ticket, the system needs to ask clarifying questions to extract these missing entities.  The intent recognition is successful, but the entity extraction needs improvement.
+
+-----------------------------------------------
+
+Convo 24
+==================
+Date: 17/6/2025, 7:50:18 pm
+
+User said:
+----------
+it's
+
+NLU Output:
+-----------
+{
+  "intent": "unknown",
+  "entities": {}
+}
+
+Bot Reply:
+----------
+The response `Intent: unknown, Entities: {}` is appropriate for the user input "it's".  "It's" is a highly contextual word fragment; without further context, it's impossible to determine any specific intent or extract any entities.  The system correctly identifies the lack of meaningful information.
+
+-----------------------------------------------
+
+Convo 25
+==================
+Date: 18/6/2025, 3:56:46 pm
+
+User said:
+----------
+a Hi how are you
+
+NLU Output:
+-----------
+{
+  "intent": "greeting",
+  "entities": {}
+}
+
+Bot Reply:
+----------
+Here's a possible response, depending on the desired level of formality and the chatbot's personality:
+
+**Option 1 (Friendly and informal):**
+
+> Hey there! I'm doing great, thanks for asking. How are you today?
+
+**Option 2 (Slightly more formal):**
+
+> Hello! I am doing well, thank you.  How are you?
+
+**Option 3 (Simple and concise):**
+
+> Hi! I'm good. How are you?
+
+
+The best option depends on the overall context and design of your chatbot.
+
+-----------------------------------------------

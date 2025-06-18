@@ -137,7 +137,74 @@ const getTranscriptions = (req, res) => {
   }
 };
 
+// 🔁 WebSocket-compatible STT + NLU + reply handler
+const transcribeAudioBase64 = async (audioBase64) => {
+  try {
+    const request = {
+      audio: { content: audioBase64 },
+      config: {
+        encoding: 'WEBM_OPUS',
+        languageCode: 'en-US',
+        model: 'latest_long'
+      }
+    };
+
+    const [response] = await speechClient.recognize(request);
+    const transcription = response.results.map(result => result.alternatives[0].transcript).join('\n');
+
+    // 🧠 Run NLU
+    let nluResult = {};
+    try {
+      nluResult = await extractIntentEntities(transcription);
+      console.log('🤖 NLU Result:', nluResult);
+    } catch (nluError) {
+      console.error('❌ Error in NLU:', nluError.message);
+      nluResult = { error: 'Failed to extract intent/entities' };
+    }
+
+    // 💬 Generate Bot Reply
+    let botReply = '';
+    try {
+      botReply = await getDynamicResponse(nluResult.intent, nluResult.entities, transcription);
+      console.log('💬 Bot Reply:', botReply);
+    } catch (err) {
+      console.error('❌ Dialogue error:', err.message);
+      botReply = 'Sorry, I had trouble generating a response.';
+    }
+
+    // 🔊 Convert to speech
+    let audioBase64Reply = '';
+    try {
+      const audioBuffer = await synthesizeSpeech(botReply);
+      audioBase64Reply = audioBuffer.toString('base64');
+    } catch (ttsError) {
+      console.error('❌ TTS Error:', ttsError.message);
+    }
+
+    // 🗂️ Optional: log the conversation
+    appendToConversationLog({ transcription, nlu: nluResult, reply: botReply });
+
+    return {
+      success: true,
+      transcription,
+      intent: nluResult.intent,
+      entities: nluResult.entities,
+      reply: botReply,
+      audioBase64: audioBase64Reply
+    };
+
+  } catch (err) {
+    console.error('❌ WebSocket audio processing error:', err.message);
+    return {
+      success: false,
+      message: 'Error processing audio via WebSocket',
+      error: err.message
+    };
+  }
+};
+
 module.exports = {
   handleAudioUpload,
-  getTranscriptions
+  getTranscriptions,
+  transcribeAudioBase64
 };
